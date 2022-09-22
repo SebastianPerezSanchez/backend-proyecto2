@@ -47,6 +47,12 @@ app.use('/api/movimiento', require('./routes/movimientos')),
 app.use('/api/login', require('./routes/auth'))
 
 
-app.listen(3000, () => {
-    console.log('Servidor corriendo en puerto '+ 3000)
-})
+
+app.set('port', (process.env.PORT || 3000));
+
+app.get('/', function(request, response){
+    var result = 'App is running'
+    response.send(result)
+}).listen(app.get('port'), function(){
+    console.log('App is running, server is listening on port', app.get('port'));
+});
