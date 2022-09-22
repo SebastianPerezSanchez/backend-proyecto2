@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+require('dotenv').config()
 
 const dbConnection = async () => {
 
@@ -13,7 +14,6 @@ const dbConnection = async () => {
 
 }
 
-require('dotenv').config({ path: './.env' });
 
 module.exports = {
     dbConnection
