@@ -13,6 +13,8 @@ const dbConnection = async () => {
 
 }
 
+require('dotenv').config({ path: 'ENV_FILENAME' });
+
 module.exports = {
     dbConnection
 }
