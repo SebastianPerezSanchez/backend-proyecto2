@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('express');
 const {WebhookClient} = require('dialogflow-fulfillment');
+const productos = require('./models/producto');
 
 
 const { dbConnection } = require('./database/config')
@@ -76,7 +77,7 @@ app.post('/webhook', express.json(),function(request, response){
   }
 
   function TestWebHook(agent) {
-    agent.add(`Estoy enviando desde el webhook`);
+    agent.add(`Estoy enviando desde el ` + productos.findOne({ codigo : agent}));
     }
 
   let intentMap = new Map();
