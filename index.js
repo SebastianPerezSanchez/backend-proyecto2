@@ -57,7 +57,31 @@ app.get('/', function(request, response){
     console.log('App is running, server is listening on port', app.get('port'));
 });
 
-app.post('/webhook', function(request, response){
-    var result = 'App is running'
-    response.send(result)
+app.post('/webhook', express.json(),function(request, response){
+    
+    const agent = new WebhookClient({ request, response });
+  console.log('Dialogflow Request headers: ' + JSON.stringify(request.headers));
+  console.log('Dialogflow Request body: ' + JSON.stringify(request.body));
+  
+ 
+  function welcome(agent) {
+    agent.add(`Welcome to my agent!`);
+  }
+ 
+  function fallback(agent) {
+    agent.add(`I didn't understand`);
+    agent.add(`I'm sorry, can you try again?`);
+  }
+
+  function TestWebHook(agent) {
+    agent.add(`Estoy enviando desde el webhook`);
+    agent.add(`I'm sorry, can you try again?`);
+  }
+
+  let intentMap = new Map();
+  intentMap.set('Default Welcome Intent', welcome);
+  intentMap.set('Default Fallback Intent', fallback);
+  intentMap.set('Default TestWebHook Intent', TestWebHook);
+
+  agent.handleRequest(intentMap);
 });
