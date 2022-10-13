@@ -62,7 +62,7 @@ app.post('/webhook', express.json(),function(request, response){
     const agent = new WebhookClient({ request, response });
   console.log('Dialogflow Request headers: ' + JSON.stringify(request.headers));
   console.log('Dialogflow Request body: ' + JSON.stringify(request.body));
-  
+
  
   function welcome(agent) {
     agent.add(`Welcome to my agent!`);
@@ -75,8 +75,7 @@ app.post('/webhook', express.json(),function(request, response){
 
   function TestWebHook(agent) {
     agent.add(`Estoy enviando desde el webhook`);
-    agent.add(`I'm sorry, can you try again?`);
-  }
+    }
 
   let intentMap = new Map();
   intentMap.set('Default Welcome Intent', welcome);
