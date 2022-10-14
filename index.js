@@ -79,9 +79,10 @@ app.post('/webhook', express.json(),function(request, response){
   }
 
   function TestWebHook(agent) {
+
     let productoinfo = productos.findOne({codigo:agent});
     agent.add(`Estoy enviando desde el ` + productoinfo.name);
-    console.log(" " + productoinfo.name);
+    console.log(" " + productoinfo.nombre);
     }
 
   let intentMap = new Map();
