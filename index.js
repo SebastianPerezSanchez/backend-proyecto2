@@ -4,6 +4,7 @@ const express = require('express');
 const cors = require('express');
 const {WebhookClient} = require('dialogflow-fulfillment');
 const {Card, Suggestion} = require('dialogflow-fulfillment');
+
 const productos = require('./models/producto');
 
 
@@ -93,7 +94,7 @@ app.post('/webhook', express.json(),function(request, response){
             imageUrl: 'https://developers.google.com/actions/images/badges/XPM_BADGING_GoogleAssistant_VER.png',
             text: `esto es el body de un card\n Esto va rellenando el body`,
             buttonText: 'Botón',
-            buttonUrl: ''
+            buttonUrl: 'https://developers.google.com/actions/images/badges/XPM_BADGING_GoogleAssistant_VER.png'
             })
             );
     }
