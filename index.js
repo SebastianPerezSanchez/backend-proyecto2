@@ -80,15 +80,29 @@ app.post('/webhook', express.json(),function(request, response){
 
   function TestWebHook(agent) {
 
+    let parameters = agent.parameters.text;
     let productoinfo = productos.findOne({codigo:agent});
-    agent.add(`Estoy enviando desde el ` + productoinfo.name);
+    agent.add(`Estoy enviando este mensaje desde el backend: ` + productoinfo.name);
     console.log(" " + productoinfo.nombre);
+    }
+
+    function TestCard(agent) {
+        agent.add(new Card({
+            title: `Ejemplo de titulo`,
+            imageUrl: 'https://developers.google.com/actions/images/badges/XPM_BADGING_GoogleAssistant_VER.png',
+            text: `esto es el body de un card\n Esto va rellenando el body`,
+            buttonText: 'Botón',
+            buttonUrl: ''
+            })
+            );
     }
 
   let intentMap = new Map();
   intentMap.set('Default Welcome Intent', welcome);
   intentMap.set('Default Fallback Intent', fallback);
   intentMap.set('TestWebHook', TestWebHook);
+  intentMap.set('TestCard', TestCard);
+
 
   agent.handleRequest(intentMap);
 });
