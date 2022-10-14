@@ -78,6 +78,7 @@ app.post('/webhook', express.json(),function(request, response){
 
   function TestWebHook(agent) {
     agent.add(`Estoy enviando desde el ` + productos.findOne({ codigo : agent}));
+    console.log(" " + productos.findOne({ codigo : agent}));
     }
 
   let intentMap = new Map();
