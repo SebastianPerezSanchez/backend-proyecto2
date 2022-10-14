@@ -6,7 +6,9 @@ const {WebhookClient} = require('dialogflow-fulfillment');
 const productos = require('./models/producto');
 
 
-const { dbConnection } = require('./database/config')
+const { dbConnection } = require('./database/config');
+const { param } = require('express-validator');
+const producto = require('./models/producto');
 
 // Crear el servidor de express
 const app = express();
@@ -77,8 +79,9 @@ app.post('/webhook', express.json(),function(request, response){
   }
 
   function TestWebHook(agent) {
-    agent.add(`Estoy enviando desde el ` + productos.findOne({ codigo : agent}));
-    console.log(" " + productos.findOne({ codigo : agent}));
+    let productoinfo = productos.findOne({codigo:agent});
+    agent.add(`Estoy enviando desde el ` + productoinfo.name);
+    console.log(" " + productoinfo.name);
     }
 
   let intentMap = new Map();
