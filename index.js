@@ -91,10 +91,10 @@ app.post('/webhook', express.json(),function(request, response){
     function TestCard(agent) {
         agent.add(new Card({
             title: `Ejemplo de titulo`,
-            imageUrl: 'https://developers.google.com/actions/images/badges/XPM_BADGING_GoogleAssistant_VER.png',
+            imageUrl: 'https://st.depositphotos.com/2935381/4189/i/450/depositphotos_41897159-stock-photo-example-concept.jpg',
             text: `esto es el body de un card\n Esto va rellenando el body`,
             buttonText: 'Botón',
-            buttonUrl: 'https://developers.google.com/actions/images/badges/XPM_BADGING_GoogleAssistant_VER.png'
+            buttonUrl: 'https://www.clker.com/cliparts/h/M/j/T/O/s/seul-friends-botton.svg.hi.png'
             })
             );
     }
