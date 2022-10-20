@@ -99,11 +99,17 @@ app.post('/webhook', express.json(),function(request, response){
             );
     }
 
+    function ReadProduct(agent){
+      const productId = agent.parameters.text;
+      agent.add(`el id del producto que buscas es: ` + productId);
+    }
+
   let intentMap = new Map();
   intentMap.set('Default Welcome Intent', welcome);
   intentMap.set('Default Fallback Intent', fallback);
   intentMap.set('TestWebHook', TestWebHook);
   intentMap.set('TestCard', TestCard);
+  intentMap.set('ReadProduct', ReadProduct);
 
 
   agent.handleRequest(intentMap);
