@@ -5,12 +5,11 @@ const cors = require('express');
 const {WebhookClient} = require('dialogflow-fulfillment');
 const {Card, Suggestion} = require('dialogflow-fulfillment');
 
-const productos = require('./models/producto');
-
-
 const { dbConnection } = require('./database/config');
 const { param } = require('express-validator');
-const producto = require('./models/producto');
+
+//Modelos
+const productos = require('./models/producto');
 
 // Crear el servidor de express
 const app = express();
@@ -101,7 +100,18 @@ app.post('/webhook', express.json(),function(request, response){
 
     function ReadProduct(agent){
       const productId = agent.parameters.text;
-      const productCaught = productos.findOne( {codigo:productId});
+
+      const productosa = await 
+        productos.find({})
+        .populate(
+            {
+            path: 'marca',
+            select: 'nombre'
+            }
+        )
+
+      const productCaught = productosa.findOne( {codigo:productId});
+
       if(productCaught != null)
       {
         agent.add(`el nombre del producto que buscas es: ` + productCaught.nombre);
