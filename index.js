@@ -101,8 +101,9 @@ app.post('/webhook', express.json(),function(request, response){
     function ReadProduct(agent){
       const productId = agent.parameters.text;
 
-      const productCaught = productos.findOne( {codigo:productId});
+      let productCaught = productos.findOne( {codigo:productId});
 
+      console.log("hola1" + productos.find({}))
       console.log("hola" + productos);
       console.log("hola" + productCaught);
       if(productCaught != null)
