@@ -98,12 +98,12 @@ app.post('/webhook', express.json(),function(request, response){
             );
     }
 
-    async function ReadProduct(agent){
+    function ReadProduct(agent){
       const productId = agent.parameters.text;
 
-      let productCaught = Producto.findOne( {codigo:productId});
+      let productCaught =  Producto.findOne( {codigo:productId});
 
-      const productaos = await Producto.find({}).populate(
+      const productaos =  Producto.find({}).populate(
             {
             path: 'marca',
             select: 'nombre'
