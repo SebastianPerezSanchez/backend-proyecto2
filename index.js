@@ -98,10 +98,10 @@ app.post('/webhook', express.json(),function(request, response){
             );
     }
 
-    function ReadProduct(agent){
+    async function ReadProduct(agent){
       const productId = agent.parameters.text;
 
-      const productosa =  
+      const productosa =  await
         productos.find({})
         .populate(
             {
