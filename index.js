@@ -9,7 +9,7 @@ const { dbConnection } = require('./database/config');
 const { param } = require('express-validator');
 
 //Modelos
-const productos = require('./models/producto');
+const Producto = require('./models/producto');
 
 // Crear el servidor de express
 const app = express();
@@ -98,13 +98,20 @@ app.post('/webhook', express.json(),function(request, response){
             );
     }
 
-    function ReadProduct(agent){
+    async function ReadProduct(agent){
       const productId = agent.parameters.text;
 
-      let productCaught = productos.findOne( {codigo:productId});
+      let productCaught = Producto.findOne( {codigo:productId});
 
-      console.log("hola1" + productos.find({}))
-      console.log("hola" + productos);
+      const productaos = await Producto.find({}).populate(
+            {
+            path: 'marca',
+            select: 'nombre'
+            }
+        );
+      console.log("as" + productaos)
+      console.log("hola1" + Producto.find({}))
+      console.log("hola" + Producto);
       console.log("hola" + productCaught);
       if(productCaught != null)
       {
