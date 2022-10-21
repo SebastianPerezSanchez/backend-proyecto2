@@ -101,7 +101,13 @@ app.post('/webhook', express.json(),function(request, response){
 
     function ReadProduct(agent){
       const productId = agent.parameters.text;
-      agent.add(`el id del producto que buscas es: ` + productId);
+      const productCaught = productos.findOne( {codigo:productId});
+      if(productCaught != null)
+      {
+        agent.add(`el nombre del producto que buscas es: ` + productCaught.nombre);
+      } else {
+        agent.add(`No existe ningun producto con el id: ` + productId);
+      }
     }
 
   let intentMap = new Map();
