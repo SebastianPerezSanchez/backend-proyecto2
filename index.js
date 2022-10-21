@@ -101,14 +101,14 @@ app.post('/webhook', express.json(),function(request, response){
     function ReadProduct(agent){
       const productId = agent.parameters.text;
 
-      const productosa = await 
+      const productosa =  
         productos.find({})
         .populate(
             {
             path: 'marca',
             select: 'nombre'
             }
-        )
+        );
 
       const productCaught = productosa.findOne( {codigo:productId});
 
