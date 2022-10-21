@@ -109,12 +109,13 @@ app.post('/webhook', express.json(),function(request, response){
             }
         );
       
-        let productCaught = await productaos.findOne( {codigo:productId});
+      let productCaught = await Producto.findOne( {codigo:productId});
 
       console.log("as" + productaos)
       console.log("hola1" + Producto.find({}))
       console.log("hola" + Producto);
       console.log("hola" + productCaught);
+
       if(productCaught != null)
       {
         agent.add(`el nombre del producto que buscas es: ` + productCaught.nombre);
