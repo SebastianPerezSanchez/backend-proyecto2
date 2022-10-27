@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('express');
-const {WebhookClient} = require('dialogflow-fulfillment');
+const {WebhookClient, Payload} = require('dialogflow-fulfillment');
 const {Card, Suggestion} = require('dialogflow-fulfillment');
 
 const { dbConnection } = require('./database/config');
@@ -100,31 +100,36 @@ app.post('/webhook', express.json(),function(request, response){
 
     async function ReadProduct(agent){
       const productId = agent.parameters.text;
-
-
-      const productaos = await Producto.find({}).populate(
-            {
-            path: 'marca',
-            select: 'nombre'
-            }
-        );
       
       let productCaught = await Producto.findOne( {codigo:productId});
 
-      console.log("as" + productaos)
-      console.log("hola1" + Producto.find({}))
-      console.log("hola" + Producto);
-      console.log("hola" + productCaught);
-
       if(productCaught != null)
       {
-        agent.add(`el nombre del producto que buscas es: ` + productCaught.nombre);
+        agent.add(new Payload({
+          "richContent": [
+            [
+              {
+                "type": "accordion",
+                "title": "Accordion title",
+                "subtitle": "Accordion subtitle",
+                "image": {
+                  "src": {
+                    "rawUrl": "https://google.com"
+                  }
+                },
+                "text": "Accordion text"
+              }
+            ]
+          ]
+        })
+        );
       } else {
         agent.add(`No existe ningun producto con el id: ` + productId);
       }
     }
 
   let intentMap = new Map();
+  
   intentMap.set('Default Welcome Intent', welcome);
   intentMap.set('Default Fallback Intent', fallback);
   intentMap.set('TestWebHook', TestWebHook);
