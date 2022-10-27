@@ -114,7 +114,7 @@ app.post('/webhook', express.json(),function(request, response){
                 subtitle: "Accordion subtitle",
                 image: {
                   src: {
-                    "rawUrl": "https://google.com"
+                    rawUrl: "https://google.com"
                   }
                 },
                 text: "Accordion text"
