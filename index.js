@@ -106,18 +106,18 @@ app.post('/webhook', express.json(),function(request, response){
       if(productCaught != null)
       {
         agent.add(new Payload({
-          "richContent": [
+          richContent: [
             [
               {
-                "type": "accordion",
-                "title": "Accordion title",
-                "subtitle": "Accordion subtitle",
-                "image": {
-                  "src": {
+                type: "accordion",
+                title: "Accordion title",
+                subtitle: "Accordion subtitle",
+                image: {
+                  src: {
                     "rawUrl": "https://google.com"
                   }
                 },
-                "text": "Accordion text"
+                text: "Accordion text"
               }
             ]
           ]
