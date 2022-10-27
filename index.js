@@ -106,18 +106,18 @@ app.post('/webhook', express.json(),function(request, response){
       if(productCaught != null)
       {
        var productData = {
-        "richContent": [
+        richContent: [
           [
             {
-              "type": "accordion",
-              "title": "Accordion title",
-              "subtitle": "Accordion subtitle",
-              "image": {
-                "src": {
-                  "rawUrl": "https://example.com/images/logo.png"
+              type: "accordion",
+              title: "Accordion title",
+              subtitle: "Accordion subtitle",
+              image: {
+                src: {
+                  rawUrl: "https://example.com/images/logo.png"
                 }
               },
-              "text": "Accordion text"
+              text: "Accordion text"
             }
           ]
         ]
