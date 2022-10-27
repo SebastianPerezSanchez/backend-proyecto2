@@ -105,24 +105,25 @@ app.post('/webhook', express.json(),function(request, response){
 
       if(productCaught != null)
       {
-        agent.add(new Payload({
-          richContent: [
-            [
-              {
-                type: "accordion",
-                title: "Accordion title",
-                subtitle: "Accordion subtitle",
-                image: {
-                  src: {
-                    rawUrl: "https://google.com"
-                  }
-                },
-                text: "Accordion text"
-              }
-            ]
+       var productData = {
+        "richContent": [
+          [
+            {
+              "type": "accordion",
+              "title": "Accordion title",
+              "subtitle": "Accordion subtitle",
+              "image": {
+                "src": {
+                  "rawUrl": "https://example.com/images/logo.png"
+                }
+              },
+              "text": "Accordion text"
+            }
           ]
-        })
-        );
+        ]
+       }
+
+       agent.add(new Payload(platform.UNSPECIFIED, productData, {sendAsMessage: true, rawPayload: true,}))
       } else {
         agent.add(`No existe ningun producto con el id: ` + productId);
       }
