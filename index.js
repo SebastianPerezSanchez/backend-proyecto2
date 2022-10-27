@@ -117,7 +117,7 @@ app.post('/webhook', express.json(),function(request, response){
                   rawUrl: "https://example.com/images/logo.png"
                 }
               },
-              text: "Marca: " + productCaught.marca + "\n Descripción: " + productCaught.descripcion
+              text: "Marca: " + productCaught.marca.nombre + "\n Descripción: " + productCaught.descripcion
             }
           ]
         ]
