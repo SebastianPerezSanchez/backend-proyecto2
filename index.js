@@ -110,14 +110,14 @@ app.post('/webhook', express.json(),function(request, response){
           [
             {
               type: "accordion",
-              title: "Accordion title",
-              subtitle: "Accordion subtitle",
+              title: productCaught.nombre,
+              subtitle: "Precio: S/." + productCaught.precio,
               image: {
                 src: {
                   rawUrl: "https://example.com/images/logo.png"
                 }
               },
-              text: "Accordion text"
+              text: "Marca: " + productCaught.marca + "\n Descripción: " + productCaught.descripcion
             }
           ]
         ]
