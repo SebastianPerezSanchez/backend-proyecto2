@@ -144,12 +144,13 @@ app.post('/webhook', express.json(),function(request, response){
       const productoId = agent.parameters.producto;
       let almacenCaught = await Almacen.findOne({nombre:almacenName});  
       let productoCaught = await Producto.findOne({codigo:productoId});
-      let movimientoCaught = await Movimiento.findOne({almacen:almacenCaught._id, producto:productoCaught._id, tipo_movimiento:'63255df8f46682323bd7303f'});
 
       if(almacenCaught != null)
       {
         if(productoCaught != null)
         {
+          let movimientoCaught = await Movimiento.findOne({almacen:almacenCaught._id, producto:productoCaught._id, tipo_movimiento:'63255df8f46682323bd7303f'});
+
             if(movimientoCaught != null)
             {
               var movimientoData = {
