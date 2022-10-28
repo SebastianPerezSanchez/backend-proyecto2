@@ -10,7 +10,9 @@ const { param } = require('express-validator');
 
 //Modelos
 const Producto = require('./models/producto');
-
+const ProductoAlmacen = require('./models/producto_almacen');
+const Almacen = require('./models/almacen');
+const Movimiento = require('./models/movimiento');
 // Crear el servidor de express
 const app = express();
 
@@ -117,7 +119,7 @@ app.post('/webhook', express.json(),function(request, response){
                   rawUrl: "https://example.com/images/logo.png"
                 }
               },
-              text: "Marca: " + productCaught.marca.nombre + "\n Descripción: " + productCaught.descripcion
+              text: "Marca: " + productCaught.marca + "\n Descripción: " + productCaught.descripcion
             }
           ]
         ]
@@ -129,6 +131,58 @@ app.post('/webhook', express.json(),function(request, response){
       }
     }
 
+    async function NoStock(){
+      const almacenName = agent.parameters.almacen;
+      let almacenCaught = await Almacen.findOne({nombre:almacenName}); 
+      let inventarioCaught = await ProductoAlmacen.find({almacen:almacenCaught._id, stock:0});
+      
+
+    }
+    
+    async function LastOutputInventory(){
+      const almacenName = agent.parameters.almacen;
+      const productoId = agent.parameters.producto;
+      let almacenCaught = await Almacen.findOne({nombre:almacenName});  
+      let productoCaught = await Producto.findOne({codigo:productoId});
+      let movimientoCaught = await Movimiento.findOne({almacen:almacenCaught._id, producto:productoCaught._id, tipo_movimiento:'63255df8f46682323bd7303f'});
+
+      if(almacenCaught != null)
+      {
+        if(productoCaught != null)
+        {
+            if(movimientoCaught != null)
+            {
+              var movimientoData = {
+                richContent: [
+                  [
+                    {
+                      type: "accordion",
+                      title: productoCaught.nombre,
+                      subtitle: movimientoCaught.fecha,
+                      image: {
+                        src: {
+                          rawUrl: "https://example.com/images/logo.png"
+                        }
+                      },
+                      text: "Cantidad en Movimiento:" + movimientoCaught.cantidad
+                    }
+                  ]
+                ]
+              }
+
+              agent.add(new Payload(agent.UNSPECIFIED, movimientoData, {sendAsMessage: true, rawPayload: true}))
+            } else {
+              agent.add(`No existe ninguna salida de inventario del producto: ` + productoId + "en el almacen: " + almacenName);
+            }
+        } else{
+          agent.add(`El producto ingresado es incorrecto`);
+        }
+      }else{
+        agent.add(`El almacen ingresado es incorrecto`);
+      }
+
+    }
+
   let intentMap = new Map();
   
   intentMap.set('Default Welcome Intent', welcome);
@@ -136,7 +190,7 @@ app.post('/webhook', express.json(),function(request, response){
   intentMap.set('TestWebHook', TestWebHook);
   intentMap.set('TestCard', TestCard);
   intentMap.set('ReadProduct', ReadProduct);
-
+  intentMap.set('LastOutputInventory', LastOutputInventory);
 
   agent.handleRequest(intentMap);
 });
