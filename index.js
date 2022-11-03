@@ -246,21 +246,17 @@ app.post('/webhook', express.json(),function(request, response){
             path: 'producto',
             select: 'nombre'
           }
-        )
-        .populate(
-          {
-            path: 'almacen',
-            select: 'nombre'
-          }
-        )
+        );
         
         console.log(inventarioPopulate)
 
         agent.add("En el almacen de " + almacenName + ", los siguientes productos no tienen stock:");
 
-        inventarioCaught.map(value => {
-          agent.add(" " + value.producto);
+        inventarioPopulate.map(value => {
+          agent.add(" " + value.producto.nombre);
         });
+      } else {
+        agent.add("El almacen ingresado es incorrecto")
       }
     }
     
