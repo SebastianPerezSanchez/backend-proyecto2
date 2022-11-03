@@ -142,20 +142,22 @@ app.post('/webhook', express.json(),function(request, response){
         var inventarioData = {
           richContent: [
             [
-              {
-                type: "list",
-                title: inventarioCaught[0].producto,
-                subtitle: "List item 1 subtitle",
-                event: {
-                  name: "",
-                  languageCode: "",
-                  parameters: {}
+              inventarioCaught.map(value => {
+                return {
+                  type: "list",
+                  title: value.producto,
+                  subtitle: "List item 1 subtitle",
+                  event: {
+                    name: "",
+                    languageCode: "",
+                    parameters: {}
+                  }
+                },
+                {
+                  type: "divider"
                 }
-              },
-              {
-                type: "divider"
-              },
-              
+              }),
+
             ]
           ]
         };
@@ -183,7 +185,7 @@ app.post('/webhook', express.json(),function(request, response){
           }
         });
 
-        agent.add(new Payload(agent.UNSPECIFIED, listaP, {sendAsMessage: true, rawPayload: true}));
+        agent.add(new Payload(agent.UNSPECIFIED, inventarioData, {sendAsMessage: true, rawPayload: true}));
           
         console.log(inventarioCaught);
       }
