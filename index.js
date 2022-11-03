@@ -139,7 +139,9 @@ app.post('/webhook', express.json(),function(request, response){
       {
         let inventarioCaught = await ProductoAlmacen.find({almacen:almacenCaught._id, stock:0});
         
-        let contenidoInventario = [];
+        let contenidoInventario = [{
+          richContent : [[]]
+        }];
         
         inventarioCaught.forEach(elemento =>{
           contenidoInventario.push({
