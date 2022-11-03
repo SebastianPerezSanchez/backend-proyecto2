@@ -193,6 +193,7 @@ app.post('/webhook', express.json(),function(request, response){
   intentMap.set('TestCard', TestCard);
   intentMap.set('ReadProduct', ReadProduct);
   intentMap.set('LastOutputInventory', LastOutputInventory);
-
+  intentMap.set('NoStock', NoStock);
+  
   agent.handleRequest(intentMap);
 });
