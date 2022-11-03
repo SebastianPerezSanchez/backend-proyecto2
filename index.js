@@ -207,14 +207,13 @@ app.post('/webhook', express.json(),function(request, response){
         let contenidoFull = {
           richContent: [
             [
-              contenidoInventario
+              contenidoInventario.toString()
             ]
           ]
         };
         
         agent.add(new Payload(agent.UNSPECIFIED, contenidoFull, {sendAsMessage: true, rawPayload: true}));
         console.log(contenidoFull);
-        console.log(inventarioCaught);
       }
     }
     
