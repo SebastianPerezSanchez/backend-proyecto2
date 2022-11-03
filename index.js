@@ -139,10 +139,8 @@ app.post('/webhook', express.json(),function(request, response){
       {
         let inventarioCaught = await ProductoAlmacen.find({almacen:almacenCaught._id, stock:0});
         
-        let contenidoInventario = [{
-          richContent : [[]]
-        }];
-        
+        let contenidoInventario = [];
+  
         inventarioCaught.forEach(elemento =>{
           contenidoInventario.push({
             type: "list",
@@ -179,26 +177,6 @@ app.post('/webhook', express.json(),function(request, response){
           ]
         };
 
-        const dataProductos = {
-          richContent: [
-            [
-              {
-                type: "list",
-                title: "List item 1 title",
-                subtitle: "List item 1 subtitle",
-                event: {
-                  name: "",
-                  languageCode: "",
-                  parameters: {}
-                }
-              },
-              {
-                type: "divider"
-              }
-            ]
-          ]
-        }
-
         console.log(inventarioData);
 
         const listaP = inventarioCaught.map(value => {
@@ -225,8 +203,17 @@ app.post('/webhook', express.json(),function(request, response){
         });
         console.log(listaP);
         console.log(contenidoInventario);
-        agent.add(new Payload(agent.UNSPECIFIED, contenidoInventario, {sendAsMessage: true, rawPayload: true}));
-          
+        
+        let contenidoFull = {
+          richContent: [
+            [
+              contenidoInventario
+            ]
+          ]
+        };
+        
+        agent.add(new Payload(agent.UNSPECIFIED, contenidoFull, {sendAsMessage: true, rawPayload: true}));
+        console.log(contenidoFull);
         console.log(inventarioCaught);
       }
     }
