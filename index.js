@@ -160,7 +160,30 @@ app.post('/webhook', express.json(),function(request, response){
           ]
         };
 
-        agent.add(new Payload(agent.UNSPECIFIED, inventarioData, {sendAsMessage: true, rawPayload: true}));
+        const listaP = inventarioCaught.map(value => {
+          return {
+            richContent: [
+              [
+                {
+                  type: "list",
+                  title: value.producto,
+                  subtitle: "List item 1 subtitle",
+                  event: {
+                    name: "",
+                    languageCode: "",
+                    parameters: {}
+                  }
+                },
+                {
+                  type: "divider"
+                },
+                
+              ]
+            ]
+          }
+        });
+
+        agent.add(new Payload(agent.UNSPECIFIED, listaP, {sendAsMessage: true, rawPayload: true}));
           
         console.log(inventarioCaught);
       }
