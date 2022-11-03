@@ -145,7 +145,7 @@ app.post('/webhook', express.json(),function(request, response){
               inventarioCaught.map(value => {
                 return {
                   type: "list",
-                  title: value.producto,
+                  title: "value.producto",
                   subtitle: "List item 1 subtitle",
                   event: {
                     name: "",
