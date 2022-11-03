@@ -139,7 +139,7 @@ app.post('/webhook', express.json(),function(request, response){
       {
         let inventarioCaught = await ProductoAlmacen.find({almacen:almacenCaught._id, stock:0});
         
-        const contenidoInventario = [];
+        /* const contenidoInventario = [];
   
         inventarioCaught.forEach(elemento =>{
           contenidoInventario.push(
@@ -214,7 +214,15 @@ app.post('/webhook', express.json(),function(request, response){
           ]
         };
 
-        
+        inventarioCaught.map( value => {
+          agent.add(new Card({
+            title: value.producto,
+            buttonText: 'open website',
+            buttonUrl: 'https://xxherokuapp.com/visualize/'
+            })
+          )
+          }
+        );
 
         inventarioCaught.map( value => {
           agent.add(new Payload(agent.UNSPECIFIED, {
@@ -229,7 +237,29 @@ app.post('/webhook', express.json(),function(request, response){
             ]
           }, {sendAsMessage: true, rawPayload: true}))
         })
-        console.log(contenidoFull);
+        console.log(contenidoFull); */
+
+        const inventarioPopulate = await 
+        ProductoAlmacen.find({almacen:almacenCaught._id, stock:0})
+        .populate(
+          {
+            path: 'producto',
+            select: 'nombre'
+          }
+        )
+        .populate(
+          {
+            path: 'almacen',
+            select: 'nombre'
+          }
+        )
+        
+        console.log(inventarioPopulate)
+        
+        agent.add("En el almacen de " + almacenName + ", los siguientes productos no tienen stock:");
+        inventarioCaught.map(value => {
+          agent.add(value.producto);
+        })
       }
     }
     
