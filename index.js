@@ -255,11 +255,12 @@ app.post('/webhook', express.json(),function(request, response){
         )
         
         console.log(inventarioPopulate)
-        
+
         agent.add("En el almacen de " + almacenName + ", los siguientes productos no tienen stock:");
+
         inventarioCaught.map(value => {
-          agent.add(value.producto);
-        })
+          agent.add(" " + value.producto);
+        });
       }
     }
     
