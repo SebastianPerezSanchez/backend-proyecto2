@@ -147,13 +147,13 @@ app.post('/webhook', express.json(),function(request, response){
                       {
                         type: "accordion",
                         title: productoCaught.nombre,
-                        subtitle: inventarioCaught.stock,
+                        subtitle: "Stock: " + inventarioCaught.stock,
                         image: {
                           src: {
                             rawUrl: "https://example.com/images/logo.png"
                           }
                         },
-                        text: "Codigo: " + productoCaught.codigo +  "\nAlmacen: " + almacenCaught.nombre + "\nPrecio: " + productoCaught.precio
+                        text: "Codigo: " + productoCaught.codigo +  "\n Almacen: " + almacenCaught.nombre + "\n Precio: " + productoCaught.precio
                       }
                     ]
                   ]
