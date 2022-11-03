@@ -137,9 +137,31 @@ app.post('/webhook', express.json(),function(request, response){
       console.log(almacenCaught);
       if(almacenCaught != null)
       {
-      let inventarioCaught = await ProductoAlmacen.find({almacen:almacenCaught._id, stock:0});
+        let inventarioCaught = await ProductoAlmacen.find({almacen:almacenCaught._id, stock:0});
+        
+        var inventarioData = {
+          richContent: [
+            [
+              {
+                type: "list",
+                title: inventarioCaught.producto,
+                subtitle: "List item 1 subtitle",
+                event: {
+                  name: "",
+                  languageCode: "",
+                  parameters: {}
+                }
+              },
+              {
+                type: "divider"
+              },
+              
+            ]
+          ]
+        };
 
-      console.log(inventarioCaught);
+          
+        console.log(inventarioCaught);
       }
     }
     
