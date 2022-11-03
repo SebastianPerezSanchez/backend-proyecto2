@@ -153,10 +153,7 @@ app.post('/webhook', express.json(),function(request, response){
                       languageCode: "",
                       parameters: {}
                       }
-              },
-              {
-                type: "divider"
-              },
+              }
             ]]
           })
         });
@@ -219,7 +216,7 @@ app.post('/webhook', express.json(),function(request, response){
           ]
         };
         
-        agent.add(new Payload(agent.UNSPECIFIED, contenidoFull, {sendAsMessage: true, rawPayload: true}));
+        agent.add(new Payload(agent.UNSPECIFIED, contenidoInventario, {sendAsMessage: true, rawPayload: true}));
         console.log(contenidoFull);
       }
     }
