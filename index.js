@@ -213,7 +213,16 @@ app.post('/webhook', express.json(),function(request, response){
             ]
           ]
         };
-        agent.add(new Payload(agent.UNSPECIFIED, contenidoFull, {sendAsMessage: true, rawPayload: true}))
+
+        inventarioCaught.map( value => {
+          agent.add(new Card({
+            title: value.producto,
+            buttonText: 'open website',
+            buttonUrl: 'https://xxherokuapp.com/visualize/' + graphId
+            })
+          )
+          }
+        )
         console.log(contenidoFull);
       }
     }
