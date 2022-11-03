@@ -162,6 +162,8 @@ app.post('/webhook', express.json(),function(request, response){
           ]
         };
 
+        console.log(inventarioData);
+
         const listaP = inventarioCaught.map(value => {
           return {
             richContent: [
