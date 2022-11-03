@@ -139,12 +139,11 @@ app.post('/webhook', express.json(),function(request, response){
       {
         let inventarioCaught = await ProductoAlmacen.find({almacen:almacenCaught._id, stock:0});
         
-        let contenidoInventario = [];
+        const contenidoInventario = [];
   
         inventarioCaught.forEach(elemento =>{
           contenidoInventario.push(
-              {
-              richContent: [[{
+              {              
                 type: "list",
                 title: elemento.producto,
                 subtitle: "List item 1 subtitle",
@@ -153,8 +152,7 @@ app.post('/webhook', express.json(),function(request, response){
                       languageCode: "",
                       parameters: {}
                       }
-              }
-            ]]
+
           })
         });
 
@@ -216,7 +214,7 @@ app.post('/webhook', express.json(),function(request, response){
           ]
         };
         
-        agent.add(new Payload(agent.UNSPECIFIED, contenidoInventario, {sendAsMessage: true, rawPayload: true}));
+        dfMessenger.renderCustomCard(contenidoInventario);
         console.log(contenidoFull);
       }
     }
