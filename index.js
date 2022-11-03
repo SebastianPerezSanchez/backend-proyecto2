@@ -139,13 +139,12 @@ app.post('/webhook', express.json(),function(request, response){
       {
         let inventarioCaught = await ProductoAlmacen.find({almacen:almacenCaught._id, stock:0});
         
-        var inventarioData = inventarioCaught.forEach(element => 
-          {
+        var inventarioData = {
           richContent: [
             [
               {
                 type: "list",
-                title: element.producto,
+                title: inventarioCaught[0].producto,
                 subtitle: "List item 1 subtitle",
                 event: {
                   name: "",
@@ -159,7 +158,7 @@ app.post('/webhook', express.json(),function(request, response){
               
             ]
           ]
-        });
+        };
 
         agent.add(new Payload(agent.UNSPECIFIED, inventarioData, {sendAsMessage: true, rawPayload: true}));
           
