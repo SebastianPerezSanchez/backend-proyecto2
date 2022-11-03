@@ -139,7 +139,7 @@ app.post('/webhook', express.json(),function(request, response){
       {
         let inventarioCaught = await ProductoAlmacen.find({almacen:almacenCaught._id, stock:0});
         
-        var inventarioData = {
+        const  inventarioData = {
           richContent: [
             [
               inventarioCaught.map(value => {
@@ -161,6 +161,26 @@ app.post('/webhook', express.json(),function(request, response){
             ]
           ]
         };
+
+        const dataProductos = {
+          richContent: [
+            [
+              {
+                type: "list",
+                title: "List item 1 title",
+                subtitle: "List item 1 subtitle",
+                event: {
+                  name: "",
+                  languageCode: "",
+                  parameters: {}
+                }
+              },
+              {
+                type: "divider"
+              }
+            ]
+          ]
+        }
 
         console.log(inventarioData);
 
@@ -186,6 +206,7 @@ app.post('/webhook', express.json(),function(request, response){
             ]
           }
         });
+        console.log(listaP);
 
         agent.add(new Payload(agent.UNSPECIFIED, inventarioData, {sendAsMessage: true, rawPayload: true}));
           
