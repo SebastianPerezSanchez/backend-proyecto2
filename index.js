@@ -125,7 +125,7 @@ app.post('/webhook', express.json(),function(request, response){
         ]
        }
 
-       agent.add(new Payload(agent.UNSPECIFIED, productData, {sendAsMessage: true, rawPayload: true}))
+       agent.add(new Payload(agent.UNSPECIFIED, productData, {sendAsMessage: true, rawPayload: true}));
       } else {
         agent.add(`No existe ningun producto con el id: ` + productId);
       }
@@ -160,6 +160,7 @@ app.post('/webhook', express.json(),function(request, response){
           ]
         };
 
+        agent.add(new Payload(agent.UNSPECIFIED, inventarioData, {sendAsMessage: true, rawPayload: true}));
           
         console.log(inventarioCaught);
       }
