@@ -213,7 +213,7 @@ app.post('/webhook', express.json(),function(request, response){
             ]
           ]
         };
-        
+        const dfMessenger = document.querySelector('df-messenger');
         dfMessenger.renderCustomCard(contenidoInventario);
         console.log(contenidoFull);
       }
