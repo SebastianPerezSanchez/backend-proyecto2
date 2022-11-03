@@ -131,13 +131,59 @@ app.post('/webhook', express.json(),function(request, response){
       }
     }
 
+    async function StockProduct(){
+      const almacenName = agent.parameters.almacen;
+      const productId = agent.parameters.producto;
+      let almacenCaught = await Almacen.findOne({nombre:almacenName});
+      let productoCaught = await Producto.findOne({codigo:productId});
+        if(almacenCaught != null){
+          if(productoCaught != null){
+            let inventarioCaught = await ProductoAlmacen.findOne({almacen:almacenCaught._id, producto:productoCaught._id});
+              if(inventarioCaught != null) {
+                
+                var productStockData = {
+                  richContent: [
+                    [
+                      {
+                        type: "accordion",
+                        title: productoCaught.nombre,
+                        subtitle: inventarioCaught.stock,
+                        image: {
+                          src: {
+                            rawUrl: "https://example.com/images/logo.png"
+                          }
+                        },
+                        text: "Codigo: " + productoCaught.codigo +  "\nAlmacen: " + almacenCaught.nombre + "\nPrecio: " + productoCaught.precio
+                      }
+                    ]
+                  ]
+                }
+
+                agent.add(new Payload(agent.UNSPECIFIED, productStockData, {sendAsMessage: true, rawPayload: true}))
+
+              } else {
+                agent.add("No existe registros del producto: " + productoCaught.nombre + "en el almacen " + almacenName);
+              }
+          } else {
+            agent.add("El identificador no corresponde al de ningun producto existente");
+          }
+        } else {
+          agent.add("El almacen ingresado es incorrecto");
+        }
+    }
+
     async function NoStock(){
       const almacenName = agent.parameters.almacen;
       let almacenCaught = await Almacen.findOne({nombre:almacenName});
-      console.log(almacenCaught);
       if(almacenCaught != null)
       {
-        let inventarioCaught = await ProductoAlmacen.find({almacen:almacenCaught._id, stock:0});
+        const inventarioCaught = await ProductoAlmacen.find({almacen:almacenCaught._id, stock:0})
+        .populate(
+          {
+            path: 'producto',
+            select: 'nombre codigo'
+          }
+        );
         
         /* const contenidoInventario = [];
   
@@ -239,21 +285,10 @@ app.post('/webhook', express.json(),function(request, response){
         })
         console.log(contenidoFull); */
 
-        const inventarioPopulate = await 
-        ProductoAlmacen.find({almacen:almacenCaught._id, stock:0})
-        .populate(
-          {
-            path: 'producto',
-            select: 'nombre'
-          }
-        );
-        
-        console.log(inventarioPopulate)
-
         agent.add("En el almacen de " + almacenName + ", los siguientes productos no tienen stock:");
 
-        inventarioPopulate.map(value => {
-          agent.add(" " + value.producto.nombre);
+        inventarioCaught.map(value => {
+          agent.add("Nombre: " + value.producto.nombre + "\n Codigo: " + value.producto.codigo);
         });
       } else {
         agent.add("El almacen ingresado es incorrecto")
@@ -314,6 +349,7 @@ app.post('/webhook', express.json(),function(request, response){
   intentMap.set('ReadProduct', ReadProduct);
   intentMap.set('LastOutputInventory', LastOutputInventory);
   intentMap.set('NoStock', NoStock);
+  intentMap.set('StockProduct', StockProduct);
 
   agent.handleRequest(intentMap);
 });
