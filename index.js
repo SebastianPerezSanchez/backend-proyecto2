@@ -133,11 +133,14 @@ app.post('/webhook', express.json(),function(request, response){
 
     async function NoStock(){
       const almacenName = agent.parameters.almacen;
-      let almacenCaught = await Almacen.findOne({nombre:almacenName}); 
+      let almacenCaught = await Almacen.findOne({nombre:almacenName});
+      console.log(almacenCaught);
+      if(almacenCaught != null)
+      {
       let inventarioCaught = await ProductoAlmacen.find({almacen:almacenCaught._id, stock:0}).toArray();
 
       console.log(inventarioCaught);
-
+      }
     }
     
     async function LastOutputInventory(){
@@ -194,6 +197,6 @@ app.post('/webhook', express.json(),function(request, response){
   intentMap.set('ReadProduct', ReadProduct);
   intentMap.set('LastOutputInventory', LastOutputInventory);
   intentMap.set('NoStock', NoStock);
-  
+
   agent.handleRequest(intentMap);
 });
