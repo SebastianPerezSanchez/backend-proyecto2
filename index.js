@@ -137,7 +137,7 @@ app.post('/webhook', express.json(),function(request, response){
       console.log(almacenCaught);
       if(almacenCaught != null)
       {
-      let inventarioCaught = await ProductoAlmacen.find({almacen:almacenCaught._id, stock:0}).toArray();
+      let inventarioCaught = await ProductoAlmacen.find({almacen:almacenCaught._id, stock:0});
 
       console.log(inventarioCaught);
       }
