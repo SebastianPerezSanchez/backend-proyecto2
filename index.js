@@ -218,7 +218,7 @@ app.post('/webhook', express.json(),function(request, response){
           agent.add(new Card({
             title: value.producto,
             buttonText: 'open website',
-            buttonUrl: 'https://xxherokuapp.com/visualize/' + graphId
+            buttonUrl: 'https://xxherokuapp.com/visualize/'
             })
           )
           }
