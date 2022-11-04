@@ -187,17 +187,13 @@ app.post('/webhook', express.json(),function(request, response){
         //
         const contenidoInventario = [];
   
-        inventarioCaught.forEach(elemento =>{
+        inventarioCaught.map(elemento => {
           contenidoInventario.push({
             type: "list",
                 title: elemento.producto,
-                subtitle: "List item 1 subtitle",
-                event:{
-                      name: "",
-                      languageCode: "",
-                      parameters: {}
-                      }        
-          })
+                subtitle: "List item 1 subtitle"     
+            })
+          
         });
 
         /* const  inventarioData = {
