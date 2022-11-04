@@ -190,7 +190,7 @@ app.post('/webhook', express.json(),function(request, response){
         inventarioCaught.map(elemento => {
           contenidoInventario.push({
             type: "list",
-                title: elemento.producto,
+                title: `${elemento.producto}`,
                 subtitle: "List item 1 subtitle"     
             })
           
