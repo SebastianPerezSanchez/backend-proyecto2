@@ -255,7 +255,7 @@ app.post('/webhook', express.json(),function(request, response){
         let contenidoFull = {
           richContent: [
             [
-              JSON.stringify(inventarioCaught)
+              JSON.stringify(contenidoInventario)
             ]
           ]
         };
