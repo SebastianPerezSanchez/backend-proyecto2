@@ -294,6 +294,49 @@ app.post('/webhook', express.json(),function(request, response){
         agent.add("El almacen ingresado es incorrecto")
       }
     }
+
+    async function LastEntryInventory(){
+      const almacenName = agent.parameters.almacen;
+      const productoId = agent.parameters.producto;
+      let almacenCaught = await Almacen.findOne({nombre:almacenName});  
+      let productoCaught = await Producto.findOne({codigo:productoId});
+
+      if(almacenCaught != null)
+      {
+        if(productoCaught != null)
+        {
+          let movimientoCaught = await Movimiento.findOne({almacen:almacenCaught._id, producto: productoCaught._id, tipo_movimiento: '63255e17f46682323bd73041'})
+          if(movimientoCaught != null) {
+            var movimientoData = {
+              richContent: [
+                [
+                  {
+                    type: "accordion",
+                    title: productoCaught.nombre,
+                    subtitle: movimientoCaught.fecha,
+                    image: {
+                      src: {
+                        rawUrl: "https://example.com/images/logo.png"
+                      }
+                    },
+                    text: "Cantidad en Movimiento:" + movimientoCaught.cantidad
+                  }
+                ]
+              ]
+            }
+
+            agent.add(new Payload(agent.UNSPECIFIED, movimientoData, {sendAsMessage: true, rawPayload: true}))
+          } else {
+            agent.add(`No existe ningún registro de entrada de inventario del producto: ` + productoId + "en el almacen: " + almacenName);
+          }
+        } else {
+          agent.add(`El producto ingresado es incorrecto`);
+        }
+      } else {
+        agent.add('El almacén ingresado es incorrecto');
+      } 
+      
+    }
     
     async function LastOutputInventory(){
       const almacenName = agent.parameters.almacen;
@@ -350,6 +393,6 @@ app.post('/webhook', express.json(),function(request, response){
   intentMap.set('LastOutputInventory', LastOutputInventory);
   intentMap.set('NoStock', NoStock);
   intentMap.set('StockProduct', StockProduct);
-
+  intentMap.set('LastEntryInventory', LastEntryInventory);
   agent.handleRequest(intentMap);
 });
