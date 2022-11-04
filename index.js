@@ -259,9 +259,11 @@ app.post('/webhook', express.json(),function(request, response){
         };
 
         
+        agent.add(new Payload(agent.UNSPECIFIED, contenidoFull, {sendAsMessage: true, rawPayload: true}));
 
         
-        inventarioCaught.map( value => {
+        
+        /* inventarioCaught.map( value => {
           agent.add(new Card({
             title: value.producto,
             buttonText: 'open website',
@@ -270,8 +272,7 @@ app.post('/webhook', express.json(),function(request, response){
           )
           }
         );
-
-        /* inventarioCaught.map( value => {
+          inventarioCaught.map( value => {
           agent.add(new Payload(agent.UNSPECIFIED, {
             richContent : [
               [
