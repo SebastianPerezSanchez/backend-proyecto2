@@ -253,18 +253,11 @@ app.post('/webhook', express.json(),function(request, response){
 
 
         //console.log(contenidoInventario);
-        
-        contenidoInventario.map(e => {
-          return e
-        })
 
         let contenidoFull = {
           richContent: [
             [
-              contenidoInventario.map(e => {
-                return console.log(e)
-                
-              })
+              JSON.parse(inventarioCaught)
             ]
           ]
         };
