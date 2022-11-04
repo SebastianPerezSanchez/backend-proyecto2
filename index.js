@@ -184,8 +184,8 @@ app.post('/webhook', express.json(),function(request, response){
             select: 'nombre codigo'
           }
         );
-        
-        /* const contenidoInventario = [];
+        //
+        const contenidoInventario = [];
   
         inventarioCaught.forEach(elemento =>{
           contenidoInventario.push(
@@ -202,7 +202,7 @@ app.post('/webhook', express.json(),function(request, response){
           })
         });
 
-        const  inventarioData = {
+        /* const  inventarioData = {
           richContent: [
             [
               inventarioCaught.map(value => {
@@ -249,17 +249,29 @@ app.post('/webhook', express.json(),function(request, response){
             ]
           }
         });
-        console.log(listaP);
+        console.log(listaP); */
+
+
         console.log(contenidoInventario);
         
+        contenidoInventario.map(e => {
+          return e
+        })
+
         let contenidoFull = {
           richContent: [
             [
-              JSON.stringify(contenidoInventario)
+              contenidoInventario.map(e => {
+                return console.log(e)
+                
+              })
             ]
           ]
         };
 
+        
+
+        
         inventarioCaught.map( value => {
           agent.add(new Card({
             title: value.producto,
@@ -283,7 +295,7 @@ app.post('/webhook', express.json(),function(request, response){
             ]
           }, {sendAsMessage: true, rawPayload: true}))
         })
-        console.log(contenidoFull); */
+        console.log(contenidoFull); //
 
         agent.add("En el almacen de " + almacenName + ", los siguientes productos no tienen stock:");
 
@@ -327,7 +339,7 @@ app.post('/webhook', express.json(),function(request, response){
 
             agent.add(new Payload(agent.UNSPECIFIED, movimientoData, {sendAsMessage: true, rawPayload: true}))
           } else {
-            agent.add(`No existe ningún registro de entrada de inventario del producto: ` + productoId + "en el almacen: " + almacenName);
+            agent.add(`No existe ningún registro de entrada de inventario del producto: ` + productoCaught.nombre + "en el almacen: " + almacenName);
           }
         } else {
           agent.add(`El producto ingresado es incorrecto`);
