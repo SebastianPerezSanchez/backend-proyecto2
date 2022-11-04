@@ -188,8 +188,15 @@ app.post('/webhook', express.json(),function(request, response){
         const contenidoInventario = [];
   
         inventarioCaught.forEach(elemento =>{
-          contenidoInventario.push(
-              {              
+          contenidoInventario.push({
+            type: "list",
+                title: elemento.producto,
+                subtitle: "List item 1 subtitle",
+                event:{
+                      name: "",
+                      languageCode: "",
+                      parameters: {}
+                      }        
                 type: "list",
                 title: elemento.producto,
                 subtitle: "List item 1 subtitle",
