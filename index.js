@@ -197,15 +197,6 @@ app.post('/webhook', express.json(),function(request, response){
                       languageCode: "",
                       parameters: {}
                       }        
-                type: "list",
-                title: elemento.producto,
-                subtitle: "List item 1 subtitle",
-                event:{
-                      name: "",
-                      languageCode: "",
-                      parameters: {}
-                      }
-
           })
         });
 
