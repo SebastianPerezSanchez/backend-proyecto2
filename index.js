@@ -252,7 +252,7 @@ app.post('/webhook', express.json(),function(request, response){
         console.log(listaP); */
 
 
-        console.log(contenidoInventario);
+        //console.log(contenidoInventario);
         
         contenidoInventario.map(e => {
           return e
@@ -282,7 +282,7 @@ app.post('/webhook', express.json(),function(request, response){
           }
         );
 
-        inventarioCaught.map( value => {
+        /* inventarioCaught.map( value => {
           agent.add(new Payload(agent.UNSPECIFIED, {
             richContent : [
               [
@@ -294,7 +294,7 @@ app.post('/webhook', express.json(),function(request, response){
               ]
             ]
           }, {sendAsMessage: true, rawPayload: true}))
-        })
+        }) */
         console.log(contenidoFull); //
 
         agent.add("En el almacen de " + almacenName + ", los siguientes productos no tienen stock:");
