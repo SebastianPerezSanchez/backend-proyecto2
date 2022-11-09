@@ -94,14 +94,10 @@ app.post('/webhook', express.json(),function(request, response){
 
     async function TestCard(agent) {
 
-      let conv = agent.conv();
-      const textResponseText = 'Hello';
-      const suggestionText = 'My Reply';
+      agent.add(new Suggestion(`Quick Reply`));
+      agent.add(new Suggestion(`Suggestion`));
+      agent.setContext({ name: 'weather', lifespan: 2, parameters: { city: 'Rome' }});
 
-      conv.ask("Elige algo");
-      conv.ask(new Suggestions(suggestionText))
-      agent.add(conv);
-  
           let chips = {
           richContent: [
             [
