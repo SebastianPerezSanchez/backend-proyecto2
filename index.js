@@ -98,7 +98,7 @@ app.post('/webhook', express.json(),function(request, response){
       const textResponseText = 'Hello';
       const suggestionText = 'My Reply';
 
-      conv.ask(textResponseText);
+      conv.ask("Elige algo");
       conv.ask(new Suggestions(suggestionText))
       agent.add(conv);
   
