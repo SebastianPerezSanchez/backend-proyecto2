@@ -127,6 +127,8 @@ app.post('/webhook', express.json(),function(request, response){
 
         console.log(almacenCaught);
 
+        agent.add("Almacen seleccionado");
+
     }
 
     async function ReadProduct(agent){
