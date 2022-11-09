@@ -4,6 +4,8 @@ const express = require('express');
 const cors = require('express');
 const {WebhookClient, Payload} = require('dialogflow-fulfillment');
 const {Card, Suggestion} = require('dialogflow-fulfillment');
+const {Suggestions} = require('actions-on-google');
+
 
 const { dbConnection } = require('./database/config');
 const { param } = require('express-validator');
@@ -91,7 +93,16 @@ app.post('/webhook', express.json(),function(request, response){
     }
 
     async function TestCard(agent) {
-        let chips = {
+
+      let conv = agent.conv();
+      const textResponseText = 'Hello';
+      const suggestionText = 'My Reply';
+
+      conv.ask(textResponseText);
+      conv.ask(new Suggestions(suggestionText))
+      agent.add(conv);
+  
+          let chips = {
           richContent: [
             [
               {
@@ -119,15 +130,15 @@ app.post('/webhook', express.json(),function(request, response){
           ]
         }
 
-        agent.add("Seleccione el almacen que desea consultar");
-        agent.add(new Payload(agent.UNSPECIFIED, chips, {sendAsMessage: true, rawPayload: true}));
+       // agent.add("Seleccione el almacen que desea consultar");
+       // agent.add(new Payload(agent.UNSPECIFIED, chips, {sendAsMessage: true, rawPayload: true}));
 
-        const alamacenParam = agent.parameters.almacen;
-        let almacenCaught = await Almacen.findOne({nombre:alamacenParam});
+       // const alamacenParam = agent.parameters.almacen;
+       // let almacenCaught = await Almacen.findOne({nombre:alamacenParam});
 
-        console.log(almacenCaught);
+        //console.log(almacenCaught);
 
-        agent.add("Almacen seleccionado");
+        //agent.add("Almacen seleccionado");
 
     }
 
