@@ -90,14 +90,38 @@ app.post('/webhook', express.json(),function(request, response){
     }
 
     function TestCard(agent) {
-        agent.add(new Card({
-            title: `Ejemplo de titulo`,
-            imageUrl: 'https://st.depositphotos.com/2935381/4189/i/450/depositphotos_41897159-stock-photo-example-concept.jpg',
-            text: `esto es el body de un card\n Esto va rellenando el body`,
-            buttonText: 'Botón',
-            buttonUrl: 'https://www.clker.com/cliparts/h/M/j/T/O/s/seul-friends-botton.svg.hi.png'
-            })
-            );
+        let chips = {
+          richContent: [
+            [
+              {
+                type: "chips",
+                options: [
+                  {
+                    text: "Chip 1",
+                    image: {
+                      src: {
+                        "rawUrl": "https://example.com/images/logo.png"
+                      }
+                    },
+                    postback: "hola2"
+                  },
+                  {
+                    text: "Chip 2",
+                    image: {
+                      src: {
+                        rawUrl: "https://example.com/images/logo.png"
+                      }
+                    },
+                    postback: "hola2"
+                  }
+                ]
+              }
+            ]
+          ]
+        }
+
+        agent.add(new Payload(agent.UNSPECIFIED, chips, {sendAsMessage: true, rawPayload: true}));
+
     }
 
     async function ReadProduct(agent){
@@ -191,62 +215,11 @@ app.post('/webhook', express.json(),function(request, response){
           contenidoInventario.push({
             type: "list",
                 title: elemento.producto.nombre,
-                subtitle: "List item 1 subtitle"     
+                subtitle: "codigo: "  + elemento.producto.codigo    
             })
           
         });
 
-        /* const  inventarioData = {
-          richContent: [
-            [
-              inventarioCaught.map(value => {
-                return {
-                  type: "list",
-                  title: "value.producto",
-                  subtitle: "List item 1 subtitle",
-                  event: {
-                    name: "",
-                    languageCode: "",
-                    parameters: {}
-                  }
-                },
-                {
-                  type: "divider"
-                }
-              }),
-
-            ]
-          ]
-        };
-
-        console.log(inventarioData);
-
-        const listaP = inventarioCaught.map(value => {
-          return {
-            richContent: [
-              [
-                {
-                  type: "list",
-                  title: value.producto,
-                  subtitle: "List item 1 subtitle",
-                  event: {
-                    name: "",
-                    languageCode: "",
-                    parameters: {}
-                  }
-                },
-                {
-                  type: "divider"
-                },
-                
-              ]
-            ]
-          }
-        });
-        console.log(listaP); */
-
-
-        //console.log(contenidoInventario);
 
         let contenidoFull = {
           richContent: [
@@ -254,40 +227,11 @@ app.post('/webhook', express.json(),function(request, response){
           ]
         };
 
-        
+        agent.add("En el almacen de " + almacenName + ", los siguientes productos no tienen stock:");
         agent.add(new Payload(agent.UNSPECIFIED, contenidoFull, {sendAsMessage: true, rawPayload: true}));
 
-        
-        
-        /* inventarioCaught.map( value => {
-          agent.add(new Card({
-            title: value.producto,
-            buttonText: 'open website',
-            buttonUrl: 'https://xxherokuapp.com/visualize/'
-            })
-          )
-          }
-        );
-          inventarioCaught.map( value => {
-          agent.add(new Payload(agent.UNSPECIFIED, {
-            richContent : [
-              [
-                {
-                  type: "list",
-                  title: value.producto,
-                  subtitle: "ejemplo"
-                }
-              ]
-            ]
-          }, {sendAsMessage: true, rawPayload: true}))
-        }) */
-        console.log(contenidoFull); //
 
-        agent.add("En el almacen de " + almacenName + ", los siguientes productos no tienen stock:");
 
-        inventarioCaught.map(value => {
-          agent.add("Nombre: " + value.producto.nombre + "\n Codigo: " + value.producto.codigo);
-        });
       } else {
         agent.add("El almacen ingresado es incorrecto")
       }
