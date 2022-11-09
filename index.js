@@ -13,6 +13,7 @@ const Producto = require('./models/producto');
 const ProductoAlmacen = require('./models/producto_almacen');
 const Almacen = require('./models/almacen');
 const Movimiento = require('./models/movimiento');
+const almacen = require('./models/almacen');
 // Crear el servidor de express
 const app = express();
 
@@ -89,7 +90,7 @@ app.post('/webhook', express.json(),function(request, response){
     console.log(" " + productoinfo.nombre);
     }
 
-    function TestCard(agent) {
+    async function TestCard(agent) {
         let chips = {
           richContent: [
             [
@@ -97,22 +98,20 @@ app.post('/webhook', express.json(),function(request, response){
                 type: "chips",
                 options: [
                   {
-                    text: "Chip 1",
+                    text: "La Molina",
                     image: {
                       src: {
                         "rawUrl": "https://example.com/images/logo.png"
                       }
-                    },
-                    postback: "hola2"
+                    }
                   },
                   {
-                    text: "Chip 2",
+                    text: "Ceres",
                     image: {
                       src: {
                         rawUrl: "https://example.com/images/logo.png"
                       }
-                    },
-                    postback: "hola2"
+                    }
                   }
                 ]
               }
@@ -120,7 +119,13 @@ app.post('/webhook', express.json(),function(request, response){
           ]
         }
 
+        agent.add("Seleccione el almacen que desea consultar");
         agent.add(new Payload(agent.UNSPECIFIED, chips, {sendAsMessage: true, rawPayload: true}));
+
+        const alamacenParam = agent.parameters.almacen;
+        let almacenCaught = await Almacen.findOne({nombre:alamacenParam});
+
+        console.log(almacenCaught);
 
     }
 
