@@ -94,10 +94,14 @@ app.post('/webhook', express.json(),function(request, response){
 
     async function TestCard(agent) {
 
-      agent.add(new Suggestion(`Quick Reply`));
-      agent.add(new Suggestion(`Suggestion`));
-      agent.setContext({ name: 'weather', lifespan: 2, parameters: { city: 'Rome' }});
+      let conv = agent.conv();
+      const textResponseText = 'Hello';
+      const suggestionText = 'My Reply';
 
+      conv.ask("Elige algo");
+      conv.ask(new Suggestions(suggestionText));
+      agent.add(conv);
+  
           let chips = {
           richContent: [
             [
@@ -157,7 +161,7 @@ app.post('/webhook', express.json(),function(request, response){
                   rawUrl: "https://example.com/images/logo.png"
                 }
               },
-              text: "Marca: " + productCaught.marca + "\n Descripción: " + productCaught.descripcion
+              text: "\n Descripción: " + productCaught.descripcion
             }
           ]
         ]
