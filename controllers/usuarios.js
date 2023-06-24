@@ -10,7 +10,7 @@ const getUsuarios = async(req, res) => {
   
   const [usuarios, total] = await Promise.all([
     Usuario
-      .find({})
+      .find({}).sort({$natural:-1})
       .populate(
         {
           path: 'rol',
@@ -23,10 +23,6 @@ const getUsuarios = async(req, res) => {
           select: 'nombre'
         }
       )
-      .skip(  desde )
-      .limit( 5 ),
-    
-    Usuario.countDocuments()
 
   ])
 
@@ -45,7 +41,7 @@ const getUsuarios2 = async(req, res = response) => {
       const usuario = await Usuario.findById(id);
   
       res.json({
-          ok: true,
+          ok: true, 
           usuario
       })
       

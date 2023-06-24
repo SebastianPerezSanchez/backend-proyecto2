@@ -9,12 +9,14 @@ const { validarJWT } = require('../middlewares/validar-jwt');
 const { getProductos, 
         crearProducto,
         actualizarProducto,
-        borrarProducto
+        borrarProducto,
+        getCodeProducto
 } = require('../controllers/productos');
 
 const router = Router();
 
 router.get( '/', getProductos );
+router.get( '/:code_producto', getCodeProducto );
 
 router.post( '/',
     [

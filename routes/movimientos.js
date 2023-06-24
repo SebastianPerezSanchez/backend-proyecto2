@@ -7,12 +7,18 @@ const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
 
 const { getMovimientos, 
-        crearMovimiento
+        crearMovimiento,
+        getAllMovimientosEntrada,
+        getAllMovimientosSalida
 } = require('../controllers/movimientos');
 
 const router = Router();
 
 router.get( '/', getMovimientos );
+
+router.get('/entrada', getAllMovimientosEntrada)
+
+router.get('/salida', getAllMovimientosSalida)
 
 router.post( '/',
     [

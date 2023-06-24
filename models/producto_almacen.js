@@ -14,7 +14,7 @@ const ProductoAlmacenSchema = Schema({
     stock: {
         type: Number,
         required: true
-    }
+    },
 });
 
 ProductoAlmacenSchema.method('toJSON', function(){

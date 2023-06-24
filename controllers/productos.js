@@ -1,125 +1,142 @@
-const { response } = require('express')
+const { response } = require("express");
 
-const Producto = require('../models/producto')
+const Producto = require("../models/producto");
 
 // Obteniendo productos
 const getProductos = async (req, res = response) => {
+  // Populando el campo marca y almacen en la colección de Productos
+  const productos = await Producto.find({}).sort({$natural:-1}).populate({
+    path: "marca",
+    select: "nombre",
+  });
 
-    // Populando el campo marca y almacen en la colección de Productos
-    const productos = await 
-        Producto.find({})
-        .populate(
-            {
-            path: 'marca',
-            select: 'nombre'
-            }
-        )
-
-
-    res.json({
-       ok: true,
-       productos
-    })
-}
+  res.json({
+    ok: true,
+    productos,
+  });
+};
 
 //Creando productos
 const crearProducto = async (req, res = response) => {
-   
-   const producto = new Producto({
-       ...req.body
-   });
-   
-   try {
+  const producto = new Producto({
+    ...req.body,
+  });
 
-       const productoDB = await producto.save();
+  try {
+    const productoDB = await producto.save();
 
-       res.json({
-           ok: true,
-           producto: productoDB
-       });
-       
-   } catch (error) {
-       res.status(500).json({
-           ok: false,
-           msg: 'Hable con el administrador'
-       })
-   }
-}
+    res.json({
+      ok: true,
+      producto: productoDB,
+    });
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      msg: "Hable con el administrador",
+    });
+  }
+};
 
 //Actualizando Producto
 const actualizarProducto = async (req, res = response) => {
-   
-   const id = req.params.id;
+  const id = req.params.id;
 
-   try {
-
+  try {
     const producto = await Producto.findById(id);
 
     // Si existe un producto por el id
     if (!producto) {
-        return res.status(404).json({
-            ok: true,
-            msg: 'Producto no encontrado por id'
-        })
+      return res.status(404).json({
+        ok: true,
+        msg: "Producto no encontrado por id",
+      });
     }
- 
+
     // Extrayendo lo que viene en la req
     const cambiosProducto = {
-        ...req.body
-    }
+      ...req.body,
+    };
 
     // Actualizando Producto
-    const productoActualizado = await Producto.findByIdAndUpdate(id, cambiosProducto, { new: true });
-
+    const productoActualizado = await Producto.findByIdAndUpdate(
+      id,
+      cambiosProducto,
+      { new: true }
+    );
 
     res.json({
-        ok: true,
-        producto: productoActualizado
-    })
-
-   } catch (error) {
-        res.status(500).json({
-            ok: false,
-            msg: 'Hable con el administrador'
-        })
-   }
-}
+      ok: true,
+      producto: productoActualizado,
+    });
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      msg: "Hable con el administrador",
+    });
+  }
+};
 
 // Borrando Producto
-const borrarProducto = async(req, res = response) => {
-    const id = req.params.id;
- 
-    try {
- 
-     const producto = await Producto.findById(id);
- 
-     // Si existe un Producto por el id
-     if (!producto) {
-         return res.status(404).json({
-             ok: true,
-             msg: 'Producto no encontrado por id'
-         })
-     }
+const borrarProducto = async (req, res = response) => {
+  const id = req.params.id;
 
-     // Eliminando Producto
-     await Producto.findByIdAndDelete( id );
+  try {
+    const producto = await Producto.findById(id);
 
-     res.json({
-         ok: true,
-         msg: 'Producto Eliminado'
-     });
- 
-    } catch (error) {
-         res.status(500).json({
-             ok: false,
-             msg: 'Hable con el administrador'
-         })
+    // Si existe un Producto por el id
+    if (!producto) {
+      return res.status(404).json({
+        ok: true,
+        msg: "Producto no encontrado por id",
+      });
     }
-}
+
+    // Eliminando Producto
+    await Producto.findByIdAndDelete(id);
+
+    res.json({
+      ok: true,
+      msg: "Producto Eliminado",
+    });
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      msg: "Hable con el administrador",
+    });
+  }
+};
+
+const getCodeProducto = async (req, res = response) => {
+  const code = req.params.code_producto;
+  console.log(code, 'Codigo recibido')
+
+  // Populando el campo marca y almacen en la colección de Productos
+  const productos = await Producto.find({}).populate({
+    path: "marca",
+    select: "nombre",
+  });
+
+  const formateo_productos = productos.map(({nombre, marca: {nombre:marca}, precio, codigo}) => ({
+    nombre,
+    marca,
+    precio,
+    codigo
+}));
+
+console.log(formateo_productos, "formateo")
+
+  const filterProducto = formateo_productos.filter((res) => res.codigo == code);
+  console.log(filterProducto, "Producto filtrado");
+
+  res.json({
+    filterProducto,
+  });
+};
 
 module.exports = {
-   getProductos,
-   crearProducto,
-   actualizarProducto,
-   borrarProducto
-}
+  getProductos,
+  crearProducto,
+  actualizarProducto,
+  borrarProducto,
+  getCodeProducto
+};

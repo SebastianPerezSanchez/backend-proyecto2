@@ -8,13 +8,7 @@ const getMovimientos = async (req, res = response) => {
 
     // Populando el campo usuario, producto, tipo movimiento y almacen en la colección de Productos
     const movimientos = await 
-                        Movimiento.find({})
-                        .populate(
-                            {
-                            path: 'usuario',
-                            select: 'nombre'
-                            }
-                        )
+                        Movimiento.find({}).sort({$natural:-1})
                         .populate(
                             {
                             path: 'producto',
@@ -40,28 +34,96 @@ const getMovimientos = async (req, res = response) => {
     })
 }
 
+const getAllMovimientosEntrada = async (req, res = response) => {
+
+  // Populando el campo usuario, producto, tipo movimiento y almacen en la colección de Productos
+  const movimientos = await 
+                      Movimiento.find({}).sort({$natural:-1})
+                      .populate(
+                          {
+                          path: 'producto',
+                          select: 'nombre'
+                          }
+                      )
+                      .populate(
+                          {
+                          path: 'tipo_movimiento',
+                          select: 'nombre'
+                          }
+                      )
+                      .populate(
+                          {
+                          path: 'almacen',
+                          select: 'nombre'
+                          }
+                      )
+
+
+const formateo = movimientos.filter(res => res.tipo_movimiento.nombre === 'Ingreso')
+console.log(formateo)
+
+const ingreso = formateo.map( res => {
+    return {
+      producto: res.producto.nombre,
+      cantidad: res.cantidad,
+      fecha: res.fecha,
+    }
+  })
+
+  res.json({
+    ok: true,
+    movimientos: ingreso,
+  });
+};
+
+
+const getAllMovimientosSalida = async (req, res = response) => {
+
+    // Populando el campo usuario, producto, tipo movimiento y almacen en la colección de Productos
+    const movimientos = await 
+                        Movimiento.find({}).sort({$natural:-1})
+                        .populate(
+                            {
+                            path: 'producto',
+                            select: 'nombre'
+                            }
+                        )
+                        .populate(
+                            {
+                            path: 'tipo_movimiento',
+                            select: 'nombre'
+                            }
+                        )
+                        .populate(
+                            {
+                            path: 'almacen',
+                            select: 'nombre'
+                            }
+                        )
+
+const formateo = movimientos.filter( res => res.tipo_movimiento.nombre === 'Salida')
+
+const salida = formateo.map( res => {
+    return {
+      producto: res.producto.nombre,
+      cantidad: res.cantidad,
+      fecha: res.fecha,
+    }
+  })
+
+  res.json({
+    ok: true,
+    movimientos: salida,
+  });
+};
+
+
 //Creando movimiento
 const crearMovimiento = async (req, res = response) => {
 
-
-        // Extrayendo lo que viene en la req
-        const cambiosProductoAlmacen = {
-            ...req.body
-        }
-    
-        // Actualizando Producto Almacen
-        const productoAlmacenActualizado = await ProductoAlmacen.findByIdAndUpdate(id, cambiosProductoAlmacen, { new: true });
-
-   
-   const movimiento = new Movimiento({
-       ...req.body
-   });
-
-   const {fecha, cantidad, usuario, producto, tipo_movimiento, almacen, codigoRecibido } = req.body;
-
-   const productos_almacen = await ProductoAlmacen.find({})
-
-   const stockVa = 0;
+    const movimiento = new Movimiento({
+        ...req.body
+    });
    
    try {
  
@@ -69,7 +131,7 @@ const crearMovimiento = async (req, res = response) => {
 
        res.json({
            ok: true,
-           producto: productoDB
+           movimiento: movimientoDB
        });
        
    } catch (error) {
@@ -77,10 +139,12 @@ const crearMovimiento = async (req, res = response) => {
            ok: false,
            msg: 'Hable con el administrador'
        })
-   }
+   }                            
 }
 
 module.exports = {
    getMovimientos,
-   crearMovimiento
+   crearMovimiento,
+   getAllMovimientosSalida,
+   getAllMovimientosEntrada,
 }

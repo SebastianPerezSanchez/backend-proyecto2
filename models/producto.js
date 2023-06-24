@@ -21,6 +21,9 @@ const ProductoSchema = Schema({
     type: String,
     required: true
   },
+  fecha: {
+    type: String,
+  },
 });
 
 ProductoSchema.method('toJSON', function(){

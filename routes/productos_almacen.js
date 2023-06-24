@@ -9,6 +9,7 @@ const { validarJWT } = require('../middlewares/validar-jwt');
 const { getProductosAlmacen, 
         crearProductoAlmacen,
         actualizarProductoAlmacen,
+        actualizarProductoAlmacenNombre,
         borrarProductoAlmacen
 } = require('../controllers/productos_almacen');
 
@@ -18,7 +19,6 @@ router.get( '/', getProductosAlmacen );
 
 router.post( '/',
     [
-        check('producto', 'El nombre del producto es necesario').not().isEmpty(),
         check('stock', 'El stock es necesario').not().isEmpty(),
         validarCampos
     ],
@@ -27,11 +27,18 @@ router.post( '/',
 
 router.put( '/:id',
     [
-        check('producto', 'El nombre del producto es necesario').not().isEmpty(),
         check('stock', 'El stock es necesario').not().isEmpty(),
         validarCampos
     ],
     actualizarProductoAlmacen
+);
+
+router.put( '/editar/:nombre',
+    [
+        check('stock', 'El stock es necesario').not().isEmpty(),
+        validarCampos
+    ],
+    actualizarProductoAlmacenNombre
 );
 
 router.delete( '/:id',

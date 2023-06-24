@@ -2,17 +2,11 @@ const { Schema, model } = require('mongoose')
 
 const MovimientoSchema = Schema({
   fecha: {
-    type: Date,
-    required: true
+    type: String,
   },
   cantidad: {
     type: Number,
     required: true
-  },
-  usuario: {
-    type: Schema.Types.ObjectId,
-    ref: 'Usuario',
-    require: true
   },
   producto: {
     type: Schema.Types.ObjectId,
